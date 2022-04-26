@@ -1,4 +1,6 @@
 /*eslint-disable*/
 function add(a,b){
-    return a+b;
+    let sum= a+b;
+    
+    return sum;
 }
