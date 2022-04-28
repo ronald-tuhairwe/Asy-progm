@@ -1,7 +1,7 @@
 /*************qn1******************/
 class University {
-    private name:string;
-    private dept:string
+    name:string;
+    dept:string
     constructor(name:string, dept:string) {
         this.name = name;
         this.dept = dept;
@@ -11,11 +11,11 @@ class University {
     }
 }
 
-let miu = new University("MIU", "MSD");
+let miu:University = new University("MIU", "MSD");
 miu.graduation(2021);
 
 
-/*************qn3******************/
+/*************qn2******************/
 let bankAccount: {money:number,deposit(value:number):void}  = { 
 	money: 2000,
      
@@ -49,7 +49,7 @@ class Car {
     }
 }
 
-let car = new Car("BMW");
+let car:Car = new Car("BMW");
 car.honk(); // BMW is saying: Toooooooooot!
 console.log(car.acceleration); // 0
 car.accelerate(60);
@@ -61,7 +61,7 @@ let baseObject:{width:number,length:number}= {
 	width: 0, 
 	length: 0 
 }; 
-let rectangle = Object.create(baseObject); 
+let rectangle:any = Object.create(baseObject); 
 
 rectangle.width = 5; 
 rectangle.length = 2; 
