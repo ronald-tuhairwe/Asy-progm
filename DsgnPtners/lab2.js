@@ -59,7 +59,7 @@ console.log(shoppingCart.getTotalPrice()); //Expected Result: 309
 
 class Subject {
   constructor() {
-    this. observers = {};
+    this. observers = [];
   }
 
   on(event, func) {
