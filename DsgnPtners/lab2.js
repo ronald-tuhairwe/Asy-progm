@@ -10,11 +10,12 @@ const shoppingCart = (function () {
   return {
     upsertItem: function (item) {
      if(basket.find(itm => itm.id===item.id )){
-       let cnt= basket.find(itm => itm.id===item.id ).count;
-       item.count +=cnt;
-basket[indexOf(item.id)]= item;
+      //  let cnt= basket.find(itm => itm.id===item.id ).count;
+      //  item.count +=cnt;
+basket[basket.indexOf(item)]= item;
 
-     }
+     }else
+     basket.push(item);
 
     },
 
@@ -23,14 +24,15 @@ basket[indexOf(item.id)]= item;
     },
 
     getTotalPrice: function () {
-      let total = basket.reduce((a, b) => b.product.price * b.count,1);
+      let total = basket.reduce((a, b) => a+b.product.price * b.count,0);
+      
       return total;
     },
 
     removeItemById: function (id) {
-      let index = basket.map((item) => item.id).findIndex(id);
+      let index= basket.map((item) => item.id).indexOf(id);
       basket.splice(index, 1);
-      return basket;
+      return ;
     },
   };
 })();
