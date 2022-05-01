@@ -6,11 +6,11 @@
     "DOM"
     ],
     "module": "commonjs",
-    "outDir": "dist",
+    "outDir": "typscript/dist",
     "strict": true,
     "target": "ES2015"
     },
     "include": [
-    "src"
+    "typscript/src"
     ]
     }

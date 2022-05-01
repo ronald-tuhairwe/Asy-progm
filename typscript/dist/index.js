@@ -11,7 +11,7 @@ class University {
 }
 let miu = new University("MIU", "MSD");
 miu.graduation(2021);
-/*************qn3******************/
+/*************qn2******************/
 let bankAccount = {
     money: 2000,
     deposit(value) {
