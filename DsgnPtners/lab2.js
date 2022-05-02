@@ -4,7 +4,7 @@
 /**************modeule partners************************/
 
 /*****************Question 1*********************/
-console.log("*****************Question 1********************* ")
+console.log("*****************Question 1********************* ");
 const shoppingCart = (function () {
   let basket = [];
 
@@ -80,7 +80,7 @@ shoppingCart.removeItemById(1);
 console.log(shoppingCart.getItemsCount()); //Expected Result: 2
 console.log(shoppingCart.getTotalPrice()); //Expected Result: 309
 
-console.log("*****************Question 2********************* ")
+console.log("*****************Question 2********************* ");
 
 /*****************Question 2*********************/
 
@@ -124,5 +124,3 @@ sub1.emit("study", "cs445");
 //output for Line above: subject.emit('study', 'cs445');
 // cs445
 // foo: cs445
-
-
