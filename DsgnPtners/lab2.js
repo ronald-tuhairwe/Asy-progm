@@ -109,7 +109,7 @@ function foo(txt) {
   console.log(txt + "\n" + "foo.:" + txt);
 }
 function foo2(txt) {
-  console.log(txt + "\n" + "foo.***:" + txt);
+  console.log(txt + "\n" + "foo.:" + txt);
 }
 
 const sub1 = new sub();
@@ -117,11 +117,13 @@ sub1.on("eatt", foo);
 sub1.on("study", foo);
 sub1.on("study", foo2);
 
+
 sub1.emit("eatt", "Corn");
 //output for Line above: subject.emit('eat', 'Corn');
 // Corn
 // foo: Corn
 sub1.emit("study", "cs445");
+
 
 // cs445
 // foo: cs445
