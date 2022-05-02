@@ -85,25 +85,22 @@ console.log("*****************Question 2********************* ");
 /*****************Question 2*********************/
 
 function sub() {
-  let eat = [];
-  let study = [];
-
+  // let eat = [];
+  // let study = [];
+  const obsever = {};
   return {
     on: function (event, func) {
-      if (event === "eat") {
-        eat.push(func);
-      } else study.push(func);
+      if (obsever[event]) {
+        obsever[event].push(func);
+      } else obsever[event] = [func];
     },
 
     emit: function (event, msg) {
-      if (event === "eat") {
-        for (let elm of eat) {
+      if (obsever[event]) {
+        for (let elm of obsever[event]) {
           elm(msg);
         }
-      } else
-        for (let elm of study) {
-          elm(msg);
-        }
+      }
     },
   };
 }
@@ -111,16 +108,20 @@ function sub() {
 function foo(txt) {
   console.log(txt + "\n" + "foo.:" + txt);
 }
+function foo2(txt) {
+  console.log(txt + "\n" + "foo.***:" + txt);
+}
 
 const sub1 = new sub();
-sub1.on("eat", foo);
+sub1.on("eatt", foo);
 sub1.on("study", foo);
+sub1.on("study", foo2);
 
-sub1.emit("eat", "Corn");
+sub1.emit("eatt", "Corn");
 //output for Line above: subject.emit('eat', 'Corn');
 // Corn
 // foo: Corn
 sub1.emit("study", "cs445");
-//output for Line above: subject.emit('study', 'cs445');
+
 // cs445
 // foo: cs445
