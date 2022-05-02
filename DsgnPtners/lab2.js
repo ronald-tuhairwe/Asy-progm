@@ -4,19 +4,17 @@
 /**************modeule partners************************/
 
 /*****************Question 1*********************/
+console.log("*****************Question 1********************* ")
 const shoppingCart = (function () {
   let basket = [];
 
   return {
     upsertItem: function (item) {
-     if(basket.find(itm => itm.id===item.id )){
-      //  let cnt= basket.find(itm => itm.id===item.id ).count;
-      //  item.count +=cnt;
-basket[basket.indexOf(item)]= item;
-
-     }else
-     basket.push(item);
-
+      if (basket.find((itm) => itm.id === item.id)) {
+        //  let cnt= basket.find(itm => itm.id===item.id ).count;
+        //  item.count +=cnt;
+        basket[basket.indexOf(item)] = item;
+      } else basket.push(item);
     },
 
     getItemsCount: function () {
@@ -24,28 +22,55 @@ basket[basket.indexOf(item)]= item;
     },
 
     getTotalPrice: function () {
-      let total = basket.reduce((a, b) => a+b.product.price * b.count,0);
-      
+      let total = basket.reduce((a, b) => a + b.product.price * b.count, 0);
+
       return total;
     },
 
     removeItemById: function (id) {
-      let index= basket.map((item) => item.id).indexOf(id);
+      let index = basket.map((item) => item.id).indexOf(id);
       basket.splice(index, 1);
-      return ;
+      return;
     },
   };
 })();
 
-const item1 = { id: 0, product: { id: 1, name: 'Coffee', description: 'Coffee Grounds from Ethiopia', price: 9 }, count: 1 }
-const item2 = { id: 1, product: { id: 2, name: 'Tea', description: 'Oonlong Tea from China', price: 10 }, count: 5 }
-const item3 = { id: 2, product: { id: 3, name: 'Bottled Water', description: 'Bottled Water from US', price: 2 }, count: 30 }
+const item1 = {
+  id: 0,
+  product: {
+    id: 1,
+    name: "Coffee",
+    description: "Coffee Grounds from Ethiopia",
+    price: 9,
+  },
+  count: 1,
+};
+const item2 = {
+  id: 1,
+  product: {
+    id: 2,
+    name: "Tea",
+    description: "Oonlong Tea from China",
+    price: 10,
+  },
+  count: 5,
+};
+const item3 = {
+  id: 2,
+  product: {
+    id: 3,
+    name: "Bottled Water",
+    description: "Bottled Water from US",
+    price: 2,
+  },
+  count: 30,
+};
 
 shoppingCart.upsertItem(item1);
 shoppingCart.upsertItem(item2);
 shoppingCart.upsertItem(item3);
 console.log(shoppingCart.getTotalPrice()); //Expected Result: 119
-item3.product.name = 'Himilayan Water';
+item3.product.name = "Himilayan Water";
 item3.product.price = 10;
 shoppingCart.upsertItem(item3);
 
@@ -55,37 +80,49 @@ shoppingCart.removeItemById(1);
 console.log(shoppingCart.getItemsCount()); //Expected Result: 2
 console.log(shoppingCart.getTotalPrice()); //Expected Result: 309
 
+console.log("*****************Question 2********************* ")
+
 /*****************Question 2*********************/
 
-class Subject {
-  constructor() {
-    this. observers = [];
-  }
+function sub() {
+  let eat = [];
+  let study = [];
 
-  on(event, func) {
-      if (this.observers[event]) {
-          this.observers[event].push(func);
-      } else {
-          this.observers[event] = [func];
-      }
-  }
+  return {
+    on: function (event, func) {
+      if (event === "eat") {
+        eat.push(func);
+      } else study.push(func);
+    },
 
-  emit(event, message) {
-      if (this.observers[event]) {
-          this.observers[event].forEach(fnc => fnc(message));
-      }
-  }
+    emit: function (event, msg) {
+      if (event === "eat") {
+        for (let elm of eat) {
+          elm(msg);
+        }
+      } else
+        for (let elm of study) {
+          elm(msg);
+        }
+    },
+  };
 }
 
-
-const subject = new Subject();
-subject.on("eat", console.log);
-subject.on("study", console.log); 
-
-function foo(msg) {
-    console.log("foo:"  + msg);
+function foo(txt) {
+  console.log(txt + "\n" + "foo.:" + txt);
 }
-subject.on("eat", foo); 
-subject.on("study", foo); 
 
-subject.emit("eat", "Corn");
+const sub1 = new sub();
+sub1.on("eat", foo);
+sub1.on("study", foo);
+
+sub1.emit("eat", "Corn");
+//output for Line above: subject.emit('eat', 'Corn');
+// Corn
+// foo: Corn
+sub1.emit("study", "cs445");
+//output for Line above: subject.emit('study', 'cs445');
+// cs445
+// foo: cs445
+
+
