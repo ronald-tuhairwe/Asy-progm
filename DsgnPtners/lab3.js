@@ -133,7 +133,7 @@ let fibonacci = (function () {
     if (num in memo) {
       value = memo[num];
     } else {
-      if (num === 0 || num === 1) {
+      if (num <= 1 ) {
         value = 1;
       } else {
         value = func(num - 1) + func(num - 2);
