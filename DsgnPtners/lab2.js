@@ -85,8 +85,7 @@ console.log("*****************Question 2********************* ");
 /*****************Question 2*********************/
 
 function sub() {
-  // let eat = [];
-  // let study = [];
+ 
   const obsever = {};
   return {
     on: function (event, func) {

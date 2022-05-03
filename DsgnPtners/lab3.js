@@ -111,6 +111,8 @@ strategy.logging("error....");
 strategy.setStrategy(new Table());
 strategy.logging(["table", "table"]);
 
+
+
 console.log();
 /*****************Question 4*********************/
 
@@ -149,3 +151,6 @@ let fibonacci = (function () {
 })();
 
 console.log(fibonacci(5));
+
+
+
