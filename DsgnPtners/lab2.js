@@ -84,7 +84,7 @@ console.log("*****************Question 2********************* ");
 
 /*****************Question 2*********************/
 
-function sub() {
+function Subject() {
  
   const obsever = {};
   return {
@@ -104,25 +104,21 @@ function sub() {
   };
 }
 
-function foo(txt) {
-  console.log(txt + "\n" + "foo.:" + txt);
+const subject = new Subject();
+subject.on('eat', console.log); // register an observer
+subject.on('study', console.log); // register an observer
+
+function foo(msg) {
+    console.log('foo: ' + msg);
 }
-function foo2(txt) {
-  console.log(txt + "\n" + "foo.:" + txt);
-}
+subject.on('eat', foo);
+subject.on('study', foo);
 
-const sub1 = new sub();
-sub1.on("eatt", foo);
-sub1.on("study", foo);
-sub1.on("study", foo2);
-
-
-sub1.emit("eatt", "Corn");
+subject.emit('eat', 'Corn');
 //output for Line above: subject.emit('eat', 'Corn');
 // Corn
 // foo: Corn
-sub1.emit("study", "cs445");
-
-
+subject.emit('study', 'cs445');
+//output for Line above: subject.emit('study', 'cs445');
 // cs445
 // foo: cs445
