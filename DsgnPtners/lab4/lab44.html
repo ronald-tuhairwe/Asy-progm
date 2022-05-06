@@ -6,8 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
 
+    
+  </head>
+  <body>
+    <img id="img1"  src="../images/img1.jpg" alt="image 1" />
+    <img id="img2" src="../images/img2.jpg" alt="image 2" />
+    <br />
+    <button id="swp">Swap</button>
+
     <script>
-      window.onload = function () {
         document.getElementById("swp").onclick = function () {
           let pic1 = document.getElementById("img1");
           let pic2 = document.getElementById("img2");
@@ -15,13 +22,7 @@
           pic1.src = pic2.src;
           pic2.src = temp;
         };
-      };
+     
     </script>
-  </head>
-  <body>
-    <img id="img1"  src="./images/img1.jpg" alt="image 1" />
-    <img id="img2" src="./images/img2.jpg" alt="image 2" />
-    <br />
-    <button id="swp">Swap</button>
   </body>
 </html>
