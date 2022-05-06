@@ -5,35 +5,35 @@
 
 /*****************Question 1*********************/
 console.log("*****************Question 1********************* ");
-const shoppingCart = (function () {
-  let basket = [];
 
+
+const shoppingCart =(function(){
+
+  let basket=[];
   return {
-    upsertItem: function (item) {
-      if (basket.find((itm) => itm.id === item.id)) {
-        //  let cnt= basket.find(itm => itm.id===item.id ).count;
-        //  item.count +=cnt;
-        basket[basket.indexOf(item)] = item;
-      } else basket.push(item);
+  
+    upsertItem(item){
+      let index= basket.findIndex(itm => itm.id ===item.id);
+      if(index != -1){basket[index] = item; }else
+      basket.push(item);
     },
-
-    getItemsCount: function () {
-      return basket.length;
-    },
-
-    getTotalPrice: function () {
-      let total = basket.reduce((a, b) => a + b.product.price * b.count, 0);
-
-      return total;
-    },
-
-    removeItemById: function (id) {
-      let index = basket.map((item) => item.id).indexOf(id);
-      basket.splice(index, 1);
-      return;
-    },
-  };
-})();
+  
+  getItemsCount(){ return basket.length;},
+  
+  getTotalPrice() {
+    let total = basket.reduce((a,b) => (a+ b.product.price * b.count),0);
+    return total;
+  },
+  
+  removeItemById(id){
+  
+    let index = basket.findIndex( item => item.id === id);
+    basket.splice(index,1);
+  
+  }
+  }
+  
+  })();
 
 const item1 = {
   id: 0,
@@ -122,3 +122,59 @@ subject.emit('study', 'cs445');
 //output for Line above: subject.emit('study', 'cs445');
 // cs445
 // foo: cs445
+
+
+console.log("*****************Practice********************* ");
+
+/*****************Question 2*********************/
+
+function Info(){ 
+ return{logging(msg){console.info(msg)}}
+  }
+  function Warn(){ 
+    return{logging(msg){console.warn(msg)}}
+     }
+     class Error{ 
+       name;
+     logging(msg){console.error(msg)}
+       }
+       function Table(arr){ 
+        return{logging(arr){console.table(arr)}}
+         }
+
+
+
+class Strategy{
+//let strat;
+
+ 
+  setStrategy(strg){
+    this.strat=strg;
+  
+ };
+
+logging(msg){
+  return this.strat.logging(msg);
+}
+
+}
+
+const strategy = new Strategy();
+
+strategy.setStrategy(new Info());
+strategy.logging('info....');
+
+strategy.setStrategy(new Warn());
+strategy.logging('warn....');
+
+strategy.setStrategy(new Error());
+strategy.logging('error....');
+
+strategy.setStrategy(new Table());
+strategy.logging(['table', 'table']);
+
+
+
+
+
+

@@ -60,7 +60,7 @@ console.log(car.acceleration); // 60
 let baseObject:{width:number,length:number}= { 
 	width: 0, 
 	length: 0 
-}; 
+};  
 let rectangle:any = Object.create(baseObject); 
 
 rectangle.width = 5; 
@@ -71,3 +71,12 @@ rectangle.calcSize = function():number {
 }; 
 
 console.log(rectangle.calcSize()); // 10
+
+
+
+
+let userTestStatus: { id: number, name: string }[] = [
+    { "id": 0, "name": "Available" },
+    { "id": 1, "name": "Ready" },
+    { "id": 2, "name": "Started" }
+];
