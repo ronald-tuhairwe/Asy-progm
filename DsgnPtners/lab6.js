@@ -24,11 +24,6 @@ console.log("start");
 isPrimeAsync(7);
 console.log("end");
 
-// Output:
-// start
-// end
-// { prime: true }
-
 /*********************Exercise 02**************** */
 
 Array.prototype.removeDuplicatesAsync = async function () {
