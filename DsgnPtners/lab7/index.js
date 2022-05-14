@@ -22,3 +22,7 @@ window.onload = function () {
   let btn = document.getElementById("btn");
   btn.onclick = res;
 };
+
+
+let array=[1,2,3,8]
+console.log(array.indexOf(8));
