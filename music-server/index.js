@@ -42,7 +42,8 @@ function loggedInFeatures(data) {
         document.getElementById('password').value = '';
         localStorage.setItem('accessToken', data.accessToken);
         document.getElementById('page').innerHTML=afterlogin;
-        afterLogin();
+        fetchMusic();
+      
     }
 }
 
@@ -50,28 +51,104 @@ function fetchMusic() {
 
 
     fetch(`${SERVER_ROOT}/api/music`, {
+        method: 'GET',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
         })
         .then(response => response.json())
-        .then(songs => console.log(songs))
+        .then(songs => {
+            let c=1;
+            for(let x of songs){ 
             
+            let tr =`<tr>
+        <td> ${c++} </td>
+        <td>${x.title}</td>
+        <td>${x.releaseDate}</td>
+        <td><button id="ron" class="test" data-num="${x.id}" >+</button></td>
+      </tr>`
+    
+      document.getElementById('tbrow').innerHTML += tr;
+
+     
+
+
+}
+let di= document.querySelectorAll(".test");
+console.log(di);
+di.forEach(element => {
+  element.onclick = function(){
+  let datanum = this.getAttribute('data-num');
+  let tbody22= document.getElementById('table22');
+  tbody22.innerHTML ="";
+  fetch(`${SERVER_ROOT}/api/playlist/add`, {
+        method: 'POST',
+         body:JSON.stringify({ songId: datanum }),
+         
+            headers: {
+              'Content-Type': 'application/json',
+             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        }).then(response => response.json())
+        .then(data => {
+          data.forEach(bt=>{
+            let tr =`<tr>
+            <td> ${bt.orderId} </td>
+            <td>${bt.title}</td>
+            <td>x</td>
+            <td>+</td>
+          </tr>`
+          tbody22.innerHTML += tr;
+          })
+          
+
+
+        })
+  }
+});
+
+
+
+        
+    })
+
+
+    /********************************the play list****************** */
+
+    fetch(`${SERVER_ROOT}/api/playlist`, {
+      method: 'GET',
+          headers: {
+              'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+          }
+      })
+      .then(response => response.json())
+      .then(songs => {
+         
+          for(let x of songs){ 
+          
+          let tr =`<tr>
+      <td> ${x.orderId} </td>
+      <td>${x.title}</td>
+      <td>x</td>
+      <td>+</td>
+    </tr>`
+    document.getElementById('table22').innerHTML += tr;
+      }
+      
+  })
+
+  
+  // document.getElementById("test").onclick=addplaylist();   
 
       
 
-
-        // for(let x of songs){
-        //     let tr=`<tr>
-        //     <td> ${1} </td>
-        //     <td>${songs.title}</td>
-        //     <td>${songs.releaseDate}</td>
-        //     <td>+</td>
-        //   </tr>`
-        //     document.getElementById("tabrow").append(tr)
-        // }
+ 
 
 }
+
+
+    /******************************** adding to the play list****************** */
+    
 
 function fetchPlayList() {
 
@@ -79,7 +156,7 @@ function fetchPlayList() {
 
 function afterLogin() {
     
-    fetchMusic();
+    
     fetchPlayList();
     document.getElementById('content').innerHTML = 'Content of the music';
 }
@@ -136,36 +213,20 @@ let afterlogin=` <div class="container-fluid mt-2 bg-primary">
       <th>Action</th>
     </thead>
     <tbody id="tbrow" >
-      <tr>
-        <td>1</td>
-        <td>cowBoy</td>
-        <td>2001-02</td>
-        <td>+</td>
-      </tr>
-
-      <tr>
-        <td>1</td>
-        <td>cowBoy</td>
-        <td>2001-02</td>
-        <td>+</td>
-      </tr>
+      
     </tbody>
   </table>
 
   <h2>Your play list</h2>
-  <table id="table" class="table table-hover bg-success">
+  <table id="table2" class="table table-hover bg-success">
     <thead>
       <th>Order</th>
       <th>Title</th>
       <th>Action</th>
     </thead>
-    <tbody>
-      <tr>
-        <td>1</td>
-        <td>cowBoy</td>
-        <td>x</td>
-        <td>+</td>
-      </tr>
+    <tbody id="table22">
+      
+       
     </tbody>
   </table>
 </div>
@@ -186,8 +247,15 @@ let afterlogin=` <div class="container-fluid mt-2 bg-primary">
       vol...>
     </div>
   </div>
-</div>`
+</div>`;
 
-;
+
+   // let tr =`<tr>
+        //     <td> ${bt.orderId} </td>
+        //     <td>${bt.title}</td>
+        //     <td>x</td>
+        //     <td>+</td>
+        //   </tr>`
+        //   document.getElementById('table2').innerHTML += tr;
 
 
