@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>labs 888</title>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.6.7/rxjs.umd.js"></script>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="row text-center">
+            <h1>Enter the number of employees :</h1>
+            <p>
+                <input type="number" id="nums-emps" />
+                <button class="btn btn-primary" id="emp-list-btn">Get Employee List</button>
+            </p>
+        </div>
+
+        <h1 class="text-center fs-1 bg-light">Employee  List</h1>
+        <div id="employees">
+        </div>
+
+    </div>
+
+    <script>
+        let { from } = rxjs;
+let { map, filter } = rxjs.operators;
+
+window.onload = function() {
+    document.getElementById('emp-list-btn').onclick = function() {
+        fetchEmployees(document.getElementById('nums-emps').value);
+    }
+}
+
+async function fetchEmployees(num) {
+    let result = await fetch('https://randomuser.me/api/?results=' + num);
+    let emps = await result.json();
+    renderEmployees(emps.results);
+}
+
+function renderEmployees(employees) {
+    const empDiv = document.getElementById('employees');
+    empDiv.innerHTML = '';
+
+    from(employees)
+        .pipe(
+            filter(emplyy => emplyy.gender === 'female'),
+            map(emp => {
+                emp.myname = emp.name.first + " " + emp.name.last;
+                emp.mylocation = {};
+                emp.mylocation.firstline = emp.location.street.number + ' ' + emp.location.street.name;
+                emp.mylocation.secondline = emp.location.city + ' ' + emp.location.state + ' ' + emp.location.country + ' ' + emp.location.postcode;
+                return emp;
+            })
+        )
+        .subscribe(emp => {
+            let template = `
+            <div class="col">
+            ${emp.myname}
+            </div>
+            <div class="col">
+                <p class="fw-bold">Location</p>
+                <p>${emp.mylocation.firstline} </p>
+                <p>${emp.mylocation.secondline}</p>
+            </div>
+            <hr>
+            `
+            let div = document.createElement('div'); 
+            div.innerHTML = template; 
+            div.classList = 'row'; 
+            empDiv.appendChild(div);
+        });
+}
+    </script>
+</body>
+
+</html>

@@ -1,180 +1,161 @@
 /* eslint-disable*/
 "use strict";
-const SERVER_ROOT = 'http://localhost:3000';
-window.onload = function() {
+const SERVER_ROOT = "http://localhost:3000";
+window.onload = function () {
+  // if (localStorage.getItem('accessToken')) {
+  //     afterLogin();
+  // } else {
+  //     notLogin();
+  // }
 
-    // if (localStorage.getItem('accessToken')) {
-    //     afterLogin();
-    // } else {
-    //     notLogin();
-    // }
+  document.getElementById("login").onclick = function () {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
 
+    fetch(`${SERVER_ROOT}/api/auth/login`, {
+      method: "POST",
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => loggedInFeatures(data));
+  };
 
-    document.getElementById('login').onclick = function() {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-
-
-        fetch(`${SERVER_ROOT}/api/auth/login`, {
-                method: 'POST',
-                body: JSON.stringify({
-                    username,
-                    password
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(response => response.json())
-            .then(data => loggedInFeatures(data));
-    }
-
-    // document.getElementById('logoutBtn').onclick = function() {
-    //     localStorage.removeItem('accessToken');
-    //     notLogin();
-    // }
-}
+  // document.getElementById('logoutBtn').onclick = function() {
+  //     localStorage.removeItem('accessToken');
+  //     notLogin();
+  // }
+};
 
 function loggedInFeatures(data) {
-    if (data.status) {
-        document.getElementById('errormessage').innerHTML = data.message;
-    } else {
-        document.getElementById('username').value = '';
-        document.getElementById('password').value = '';
-        localStorage.setItem('accessToken', data.accessToken);
-        document.getElementById('page').innerHTML=afterlogin;
-        fetchMusic();
-      
-    }
-}
-
-function fetchMusic() {
-
-
-    fetch(`${SERVER_ROOT}/api/music`, {
-        method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-            }
-        })
-        .then(response => response.json())
-        .then(songs => {
-            let c=1;
-            for(let x of songs){ 
-            
-            let tr =`<tr>
-        <td> ${c++} </td>
-        <td>${x.title}</td>
-        <td>${x.releaseDate}</td>
-        <td><button id="ron" class="test" data-num="${x.id}" >+</button></td>
-      </tr>`
-    
-      document.getElementById('tbrow').innerHTML += tr;
-
-     
-
-
-}
-let di= document.querySelectorAll(".test");
-console.log(di);
-di.forEach(element => {
-  element.onclick = function(){
-  let datanum = this.getAttribute('data-num');
-  let tbody22= document.getElementById('table22');
-  tbody22.innerHTML ="";
-  fetch(`${SERVER_ROOT}/api/playlist/add`, {
-        method: 'POST',
-         body:JSON.stringify({ songId: datanum }),
-         
-            headers: {
-              'Content-Type': 'application/json',
-             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-            }
-        }).then(response => response.json())
-        .then(data => {
-          data.forEach(bt=>{
-            let tr =`<tr>
-            <td> ${bt.orderId} </td>
-            <td>${bt.title}</td>
-            <td>x</td>
-            <td>+</td>
-          </tr>`
-          tbody22.innerHTML += tr;
-          })
-          
-
-
-        })
-  }
-});
-
-
-
-        
-    })
-
-
-    /********************************the play list****************** */
-
-    fetch(`${SERVER_ROOT}/api/playlist`, {
-      method: 'GET',
-          headers: {
-              'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-          }
-      })
-      .then(response => response.json())
-      .then(songs => {
-         
-          for(let x of songs){ 
-          
-          let tr =`<tr>
-      <td> ${x.orderId} </td>
-      <td>${x.title}</td>
-      <td>x</td>
-      <td>+</td>
-    </tr>`
-    document.getElementById('table22').innerHTML += tr;
-      }
-      
-  })
-
+  if (data.status) {
+    document.getElementById("errormessage").innerHTML = data.message;
+  } else {
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+    localStorage.setItem("accessToken", data.accessToken);
+     let pg=document.getElementById("page")
+    document.getElementById("page").innerHTML = afterlogin;
+   
+    document.getElementById("logout").onclick =logout;
+    fetchMusic();
   
-  // document.getElementById("test").onclick=addplaylist();   
-
-      
-
+  }
  
 
 }
 
+function fetchMusic() {
+  fetch(`${SERVER_ROOT}/api/music`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+  })
+    .then((response) => response.json())
+    .then((songs) => {
+      let c = 1;
+      for (let x of songs) {
+        let tr = `<tr>
+        <td> ${c++} </td>
+        <td>${x.title}</td>
+        <td>${x.releaseDate}</td>
+        <td><button id="ron" class="test" data-num="${x.id}" >+</button></td>
+      </tr>`;
 
-    /******************************** adding to the play list****************** */
+        document.getElementById("tbrow").innerHTML += tr;
+
+      
+      }
+
+        /******************************** adding to the play list****************** */
+      let di = document.querySelectorAll(".test");
+
+      di.forEach((element) => {
+        element.onclick = function () {
+          let datanum = this.getAttribute("data-num");
+          let tbody22 = document.getElementById("table22");
+          tbody22.innerHTML = "";
+          fetch(`${SERVER_ROOT}/api/playlist/add`, {
+            method: "POST",
+            body: JSON.stringify({ songId: datanum }),
+
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              for(let bt of data){
+                let tr = `<tr id="row" >
+            <td> ${bt.orderId} </td>
+            <td>${bt.title}</td>
+            <td style="text-align: right"> <button    class="test2" data-num2="${bt.songId}" >x</button> </td>
+            <td   style="text-align: left"> <button class="play" data-num22="${bt.id}" > ></button> </td>
+          </tr>`;
+                tbody22.innerHTML += tr;
+                del();
+              }
+            });
+        };
+      });
+    });
+
+  /********************************the play list****************** */
+
+  fetch(`${SERVER_ROOT}/api/playlist`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+  })
+    .then((response) => response.json())
+    .then((songs) => {
+      for (let x of songs) {
     
+        let tr = `<tr id="row" >
+      <td> ${x.orderId} </td>
+      <td>${x.title}</td>
+      <td style="text-align: right"> <button    class="test2" data-num2="${x.songId}" >x</button> </td>
+      <td style="text-align: left"> <button class="play" data-num22="${x.id}" > ></button> </td>
+    </tr>`;
+        document.getElementById("table22").innerHTML += tr;
+        del();
+      }
 
-function fetchPlayList() {
 
+
+    });
 }
 
-function afterLogin() {
-    
-    
-    fetchPlayList();
-    document.getElementById('content').innerHTML = 'Content of the music';
+
+
+
+function fetchPlayList() {}
+
+
+ function logout(){
+  localStorage.removeItem("accessToken");
+  
+    let page2=document.getElementById("page2");
+    let page1=document.getElementById("page22");
+
+  page2.innerHTML ="";
+  
+  // document.getElementById("logout-div").style.display = "none";
+  // document.getElementById("login-div").style.display = "block";
+  // document.getElementById("content").innerHTML = "Welcome to MIU Station";
 }
-
-function notLogin() {
-    document.getElementById('search').style.display = 'none';
-    document.getElementById('logout-div').style.display = 'none';
-    document.getElementById('login-div').style.display = 'block';
-    document.getElementById('content').innerHTML = 'Welcome to MIU Station';
-}
-
-
-
-
 
 /***********************************afterlogin*********************** */
 
-let afterlogin=` <div class="container-fluid mt-2 bg-primary">
+let afterlogin = `<div  id="page2"> <div class="container-fluid mt-2 bg-primary">
 <div class="row">
   <div class="col-4">
     <img
@@ -196,7 +177,7 @@ let afterlogin=` <div class="container-fluid mt-2 bg-primary">
   </div>
 
   <div class="col-4 mt-lg-5 text-end">
-    <button class="btn btn-info " id="login">logout</button>
+    <button id="logout" class="btn btn-info " >logout</button>
   </div>
 </div>
 </div>
@@ -247,15 +228,30 @@ let afterlogin=` <div class="container-fluid mt-2 bg-primary">
       vol...>
     </div>
   </div>
-</div>`;
+</div> </div>`;
 
+/*******************delete function********* */
 
-   // let tr =`<tr>
-        //     <td> ${bt.orderId} </td>
-        //     <td>${bt.title}</td>
-        //     <td>x</td>
-        //     <td>+</td>
-        //   </tr>`
-        //   document.getElementById('table2').innerHTML += tr;
+function del(){
+  
+  let di = document.querySelectorAll(".test2");
 
+  di.forEach((element) => {
+    element.onclick = function () {
+      let datanum = this.getAttribute("data-num2");
+      let trow = document.getElementById("row");
+      trow.remove()
+     
+      fetch(`${SERVER_ROOT}/api/playlist/remove`, {
+        method: "POST",
+        body: JSON.stringify({ songId: datanum }),
 
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+    
+    };
+  });
+}
