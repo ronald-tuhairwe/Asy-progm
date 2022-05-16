@@ -1,35 +1,34 @@
 /* eslint-disable*/
 "use strict";
 const SERVER_ROOT = "http://localhost:3000";
+
 window.onload = function () {
-  // if (localStorage.getItem('accessToken')) {
-  //     afterLogin();
-  // } else {
-  //     notLogin();
-  // }
+  if (localStorage.getItem("accessToken")) {
+    document.getElementById("page").innerHTML = afterlogin;
+    fetchMusic();
+    document.getElementById("logout").onclick = logout;
+  } else {
+    document.getElementById("username").innerHTML="";
+     document.getElementById("password").innerHTML = "";
 
-  document.getElementById("login").onclick = function () {
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+    document.getElementById("login").onclick = function () {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
 
-    fetch(`${SERVER_ROOT}/api/auth/login`, {
-      method: "POST",
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => loggedInFeatures(data));
-  };
-
-  // document.getElementById('logoutBtn').onclick = function() {
-  //     localStorage.removeItem('accessToken');
-  //     notLogin();
-  // }
+      fetch(`${SERVER_ROOT}/api/auth/login`, {
+        method: "POST",
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => loggedInFeatures(data));
+    };
+  }
 };
 
 function loggedInFeatures(data) {
@@ -39,15 +38,10 @@ function loggedInFeatures(data) {
     document.getElementById("username").value = "";
     document.getElementById("password").value = "";
     localStorage.setItem("accessToken", data.accessToken);
-     let pg=document.getElementById("page")
     document.getElementById("page").innerHTML = afterlogin;
-   
-    document.getElementById("logout").onclick =logout;
     fetchMusic();
-  
+    document.getElementById("logout").onclick = logout;
   }
- 
-
 }
 
 function fetchMusic() {
@@ -69,11 +63,9 @@ function fetchMusic() {
       </tr>`;
 
         document.getElementById("tbrow").innerHTML += tr;
-
-      
       }
 
-        /******************************** adding to the play list****************** */
+      /******************************** adding to the play list****************** */
       let di = document.querySelectorAll(".test");
 
       di.forEach((element) => {
@@ -92,7 +84,7 @@ function fetchMusic() {
           })
             .then((response) => response.json())
             .then((data) => {
-              for(let bt of data){
+              for (let bt of data) {
                 let tr = `<tr id="row" >
             <td> ${bt.orderId} </td>
             <td>${bt.title}</td>
@@ -101,6 +93,7 @@ function fetchMusic() {
           </tr>`;
                 tbody22.innerHTML += tr;
                 del();
+                play();
               }
             });
         };
@@ -118,62 +111,41 @@ function fetchMusic() {
     .then((response) => response.json())
     .then((songs) => {
       for (let x of songs) {
-    
         let tr = `<tr id="row" >
       <td> ${x.orderId} </td>
       <td>${x.title}</td>
       <td style="text-align: right"> <button    class="test2" data-num2="${x.songId}" >x</button> </td>
-      <td style="text-align: left"> <button class="play" data-num22="${x.id}" > ></button> </td>
+      <td style="text-align: left"> <button class="play" data-num22="${x.urlPath}" > ></button> </td>
     </tr>`;
         document.getElementById("table22").innerHTML += tr;
+        play();
         del();
       }
-
-
-
     });
-}
-
-
-
-
-function fetchPlayList() {}
-
-
- function logout(){
-  localStorage.removeItem("accessToken");
-  
-    let page2=document.getElementById("page2");
-    let page1=document.getElementById("page22");
-
-  page2.innerHTML ="";
-  
-  // document.getElementById("logout-div").style.display = "none";
-  // document.getElementById("login-div").style.display = "block";
-  // document.getElementById("content").innerHTML = "Welcome to MIU Station";
 }
 
 /***********************************afterlogin*********************** */
 
-let afterlogin = `<div  id="page2"> <div class="container-fluid mt-2 bg-primary">
+let afterlogin = `<div  id="page2" style="padding:2%; background-color: darkslategray "> <div class="container-fluid mt-2 bg-primary">
 <div class="row">
   <div class="col-4">
     <img
       class="img-thumbnail m-2"
-      src="image.jpg"
+      src="gft2.gif"
       alt="mylog"
       style="max-width: 15%"
     />
   </div>
 
-  <div class="col-4 mt-lg-5">
+  <div class="col-4 mt-lg-5 mb-lg-5">
     <input
       id="search"
+     
       class="form-control w-50 d-inline"
       type="text"
       placeholder="Search.."
     />
-    <button id="s-btn" class="btn btn-info">Search</button>
+    <button  onclick="search()" id="s-btn" class="btn btn-info">Search</button>
   </div>
 
   <div class="col-4 mt-lg-5 text-end">
@@ -184,9 +156,9 @@ let afterlogin = `<div  id="page2"> <div class="container-fluid mt-2 bg-primary"
 
 <div class="container-fluid text-center p-5">
 <div class="row">
-  <h2>You songs you are intrested in</h2>
+  <h2 class="text-white">Your songs of intrest</h2>
 
-  <table id="table" class="table table-hover bg-success">
+  <table id="table" class="table table-stripped table-hover text-white table-dark">
     <thead>
       <th>#</th>
       <th>Title</th>
@@ -198,12 +170,13 @@ let afterlogin = `<div  id="page2"> <div class="container-fluid mt-2 bg-primary"
     </tbody>
   </table>
 
-  <h2>Your play list</h2>
-  <table id="table2" class="table table-hover bg-success">
+  <h2 class="text-white">Your play list</h2>
+  <table id="table2" class="table table-stripped table-hover text-white table-dark">
     <thead>
       <th>Order</th>
       <th>Title</th>
       <th>Action</th>
+      <th></th>
     </thead>
     <tbody id="table22">
       
@@ -215,33 +188,69 @@ let afterlogin = `<div  id="page2"> <div class="container-fluid mt-2 bg-primary"
 </div>
 
 <div class="container-fluid bg-primary">
-  <div class="row p-4">
-    <div class="col-4">
-   play signs
-    </div>
 
-    <div class="col-4 mt-lg-5">
-     navigation bar
-    </div>
-
-    <div class="col-4 mt-lg-5 text-end spinner">
-      vol...>
-    </div>
+  <div id="myAudio" class="row p-4">
+  
   </div>
 </div> </div>`;
 
+let logg = `     
+<div id="inpage" style="background-color: darkslategray ">
+  <div class="container-fluid mt-2 bg-primary">
+    <div class="row">
+      <div class="col-sm-6">
+        <img
+          class="img-thumbnail m-2"
+          src="gft2.gif"
+          alt="mylog"
+          style="max-width: 15%"
+        />
+      </div>
+
+      <div class="col-6 text-end mt-lg-5">
+        <input
+          id="username"
+          type="text"
+          placeholder="Username.."
+          class="form-control w-25 d-inline"
+        />
+        <input
+          id="password"
+          type="password"
+          placeholder="Password.."
+          class="form-control w-25 d-inline"
+        />
+        <button id="login" class="btn btn-info">login</button>
+        <h3><div id="errormessage"  style="text-align: center; color:red; " ></div></h3>
+      </div>
+    </div>
+  </div>
+
+  <div   class="container-fluid text-center style="background-color: darkslategray "">
+    <div   class="row">
+    <video  controls id="myVideo" width="900" height="500" autoplay>
+    <source  src="vid2.mp4" type="audio/mp4">
+  </video> 
+      <h2>Welcome to Music Website</h2>
+    </div>
+
+    <div class="row"  >
+      <div>All copyRights reseverd</div>
+    </div>
+  </div>
+</div>`;
+
 /*******************delete function********* */
 
-function del(){
-  
+function del() {
   let di = document.querySelectorAll(".test2");
 
   di.forEach((element) => {
     element.onclick = function () {
       let datanum = this.getAttribute("data-num2");
       let trow = document.getElementById("row");
-      trow.remove()
-     
+      trow.remove();
+
       fetch(`${SERVER_ROOT}/api/playlist/remove`, {
         method: "POST",
         body: JSON.stringify({ songId: datanum }),
@@ -250,8 +259,64 @@ function del(){
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
-      })
-    
+      });
     };
   });
 }
+
+/*******************playfunction********* */
+
+function play() {
+  let di = document.querySelectorAll(".play");
+
+  di.forEach((element) => {
+    element.onclick = function () {
+      let datanum = this.getAttribute("data-num22");
+      console.log(datanum);
+      let tolbar = document.getElementById("myAudio");
+
+      tolbar.innerHTML = `<audio controls id="myVideo" width="320" height="176" autoplay>
+  <source src="${SERVER_ROOT}/${datanum}" type="audio/mp4">
+</audio> `;
+    };
+  });
+}
+
+/************************login page******************** */
+
+function logout() {
+  localStorage.removeItem("accessToken");
+  let page2 = document.getElementById("page2");
+  page2.innerHTML = logg;
+}
+
+/**********************************search function *************/
+
+function search() {
+  let val = document.getElementById("search").value;
+  console.log(val);
+
+  fetch(`${SERVER_ROOT}/api/music?search=${val}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      let c = 1;
+      document.getElementById("tbrow").innerHTML = "";
+      for (let x of data) {
+        let tr = `<tr>
+      <td> ${c++} </td>
+      <td>${x.title}</td>
+      <td>${x.releaseDate}</td>
+      <td><button id="ron" class="test" data-num="${x.id}" >+</button></td>
+    </tr>`;
+
+        document.getElementById("tbrow").innerHTML += tr;
+      }
+    });
+}
+
+/******************************addition code*********************************************** */

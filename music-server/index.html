@@ -19,51 +19,59 @@
 <script src="index.js"></script>
 
   </head>
-  <body  >
-    <div  id="page" style="background-color: lightblue; margin: 2%; padding: 3%">
-      <div  class="container-fluid mt-2 bg-primary">
-        <div class="row">
-          <div class="col-sm-6">
-            <img
-              class="img-thumbnail m-2"
-              src="image.jpg"
-              alt="mylog"
-              style="max-width: 15%"
-            />
-          </div>
-
-          <div class="col-6 text-end mt-lg-5">
-            <input
-              id="username"
-              type="text"
-              placeholder="Username.."
-              class="form-control w-25 d-inline"
-            />
-            <input
-              id="password"
-              type="password"
-              placeholder="Password.."
-              class="form-control w-25 d-inline"
-            />
-            <button id="login" class="btn btn-info">login</button>
-          </div>
-        </div>
+  <body style="background-image: url(img1.jpg);background-repeat: no-repeat;background-size:cover;padding:3%">
+    
+    <div  id="page" style="background-color: darkslategray; padding:1%" >
+     
+<div id="inpage"  >
+  <div  class="container-fluid bg-primary" >
+    <div class="row">
+      <div class="col-sm-6">
+        <img
+          class="img-thumbnail m-2"
+          src="gft2.gif"
+          alt="mylog"
+          style="max-width: 15%"
+        />
       </div>
 
-      <div   class="container-fluid text-center bg-success">
-        <div   class="row">
-          <h2>Welcome to Music Website</h2>
-        </div>
-
-        <div class="row"  >
-          <div>All copyRights reseverd</div>
-        </div>
+      <div class="col-6 text-end mt-lg-5">
+        <input
+          id="username"
+          type="text"
+          placeholder="Username.."
+          class="form-control w-25 d-inline"
+        />
+        <input
+          id="password"
+          type="password"
+          placeholder="Password.."
+          class="form-control w-25 d-inline"
+        />
+        <button id="login" class="btn btn-info">login</button>
+        <h3><div id="errormessage"  style="text-align: center; color:red; " ></div></h3>
       </div>
+    </div>
+  </div>
+
+  <div   class="container-fluid text-center " >
+    <div   class="row">
+    
+      <video  controls id="myVideo" width="900" height="500" autoplay>
+        <source  src="vid2.mp4" type="audio/mp4">
+      </video> 
+      <h2>Welcome to Music Website</h2>
+    </div>
+
+    <div class="row">
+      <div>All copyRights reseverd</div>
+    </div>
+  </div>
+</div>
+
+
     </div>
 
     <!--********************** the code to be appended in js*****************-->
-
-    
-
   </body>
 </html>
