@@ -8,8 +8,8 @@ window.onload = function () {
     fetchMusic();
     document.getElementById("logout").onclick = logout;
   } else {
-    document.getElementById("username").innerHTML="";
-     document.getElementById("password").innerHTML = "";
+    document.getElementById("username").innerHTML = "";
+    document.getElementById("password").innerHTML = "";
 
     document.getElementById("login").onclick = function () {
       const username = document.getElementById("username").value;
@@ -124,17 +124,96 @@ function fetchMusic() {
     });
 }
 
+/*******************delete function********* */
+
+function del() {
+  let di = document.querySelectorAll(".test2");
+
+  di.forEach((element) => {
+    element.onclick = function () {
+      let datanum = this.getAttribute("data-num2");
+      let trow = document.getElementById("row");
+      trow.remove();
+
+      fetch(`${SERVER_ROOT}/api/playlist/remove`, {
+        method: "POST",
+        body: JSON.stringify({ songId: datanum }),
+
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+    };
+  });
+}
+
+/*******************playfunction********* */
+
+function play() {
+  let di = document.querySelectorAll(".play");
+
+  di.forEach((element) => {
+    element.onclick = function () {
+      let datanum = this.getAttribute("data-num22");
+      console.log(datanum);
+      let tolbar = document.getElementById("myAudio");
+
+      tolbar.innerHTML = `<audio controls id="myVideo" width="320" height="176" autoplay>
+  <source src="${SERVER_ROOT}/${datanum}" type="audio/mp4">
+</audio> `;
+    };
+  });
+}
+
+/************************logout page******************** */
+
+function logout() {
+  localStorage.removeItem("accessToken");
+  let page2 = document.getElementById("page");
+  page2.innerHTML = logg;
+}
+
+/**********************************search function *************/
+
+function search() {
+  let val = document.getElementById("search").value;
+  console.log(val);
+
+  fetch(`${SERVER_ROOT}/api/music?search=${val}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      let c = 1;
+      document.getElementById("tbrow").innerHTML = "";
+      for (let x of data) {
+        let tr = `<tr>
+      <td> ${c++} </td>
+      <td>${x.title}</td>
+      <td>${x.releaseDate}</td>
+      <td><button id="ron" class="test" data-num="${x.id}" >+</button></td>
+    </tr>`;
+
+        document.getElementById("tbrow").innerHTML += tr;
+      }
+    });
+}
+
 /***********************************afterlogin*********************** */
 
-let afterlogin = `<div  id="page2" style="padding:2%; background-color: darkslategray "> <div class="container-fluid mt-2 bg-primary">
+let afterlogin = `<div  id="page2" style="padding:2%; background-color: darkslategray "> <div class="container-fluid bg-secondary rounded-pill">
 <div class="row">
-  <div class="col-4">
-    <img
-      class="img-thumbnail m-2"
-      src="gft2.gif"
-      alt="mylog"
-      style="max-width: 15%"
-    />
+  <div class="col-sm-4 ">
+  <img
+  class="rounded-circle m-2"
+  src="gft2.gif"
+  alt="mylog"
+  style="max-width: 20%"
+/>
   </div>
 
   <div class="col-4 mt-lg-5 mb-lg-5">
@@ -195,12 +274,12 @@ let afterlogin = `<div  id="page2" style="padding:2%; background-color: darkslat
 </div> </div>`;
 
 let logg = `     
-<div id="inpage" style="background-color: darkslategray ">
-  <div class="container-fluid mt-2 bg-primary">
+<div id="inpage"  >
+  <div  class="container-fluid  bg-secondary rounded-pill" >
     <div class="row">
       <div class="col-sm-6">
         <img
-          class="img-thumbnail m-2"
+          class="rounded-circle m-2"
           src="gft2.gif"
           alt="mylog"
           style="max-width: 15%"
@@ -226,97 +305,19 @@ let logg = `
     </div>
   </div>
 
-  <div   class="container-fluid text-center style="background-color: darkslategray "">
+  <div   class="container-fluid text-center " >
     <div   class="row">
-    <video  controls id="myVideo" width="900" height="500" autoplay>
-    <source  src="vid2.mp4" type="audio/mp4">
-  </video> 
+    
+      <video  controls id="myVideo" width="900" height="500" autoplay>
+        <source  src="vid2.mp4" type="audio/mp4">
+      </video> 
       <h2>Welcome to Music Website</h2>
     </div>
 
-    <div class="row"  >
+    <div class="row">
       <div>All copyRights reseverd</div>
     </div>
   </div>
 </div>`;
-
-/*******************delete function********* */
-
-function del() {
-  let di = document.querySelectorAll(".test2");
-
-  di.forEach((element) => {
-    element.onclick = function () {
-      let datanum = this.getAttribute("data-num2");
-      let trow = document.getElementById("row");
-      trow.remove();
-
-      fetch(`${SERVER_ROOT}/api/playlist/remove`, {
-        method: "POST",
-        body: JSON.stringify({ songId: datanum }),
-
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-    };
-  });
-}
-
-/*******************playfunction********* */
-
-function play() {
-  let di = document.querySelectorAll(".play");
-
-  di.forEach((element) => {
-    element.onclick = function () {
-      let datanum = this.getAttribute("data-num22");
-      console.log(datanum);
-      let tolbar = document.getElementById("myAudio");
-
-      tolbar.innerHTML = `<audio controls id="myVideo" width="320" height="176" autoplay>
-  <source src="${SERVER_ROOT}/${datanum}" type="audio/mp4">
-</audio> `;
-    };
-  });
-}
-
-/************************login page******************** */
-
-function logout() {
-  localStorage.removeItem("accessToken");
-  let page2 = document.getElementById("page2");
-  page2.innerHTML = logg;
-}
-
-/**********************************search function *************/
-
-function search() {
-  let val = document.getElementById("search").value;
-  console.log(val);
-
-  fetch(`${SERVER_ROOT}/api/music?search=${val}`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      let c = 1;
-      document.getElementById("tbrow").innerHTML = "";
-      for (let x of data) {
-        let tr = `<tr>
-      <td> ${c++} </td>
-      <td>${x.title}</td>
-      <td>${x.releaseDate}</td>
-      <td><button id="ron" class="test" data-num="${x.id}" >+</button></td>
-    </tr>`;
-
-        document.getElementById("tbrow").innerHTML += tr;
-      }
-    });
-}
 
 /******************************addition code*********************************************** */
