@@ -65,40 +65,6 @@ function fetchMusic() {
         document.getElementById("tbrow").innerHTML += tr;
       }
 
-      /******************************** adding to the play list****************** */
-      let di = document.querySelectorAll(".test");
-
-      di.forEach((element) => {
-        element.onclick = function () {
-          let datanum = this.getAttribute("data-num");
-          let tbody22 = document.getElementById("table22");
-          tbody22.innerHTML = "";
-          fetch(`${SERVER_ROOT}/api/playlist/add`, {
-            method: "POST",
-            body: JSON.stringify({ songId: datanum }),
-
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              for (let bt of data) {
-                let tr = `<tr id="row" >
-            <td> ${bt.orderId} </td>
-            <td>${bt.title}</td>
-            <td style="text-align: right"> <button    class="test2" data-num2="${bt.songId}" >x</button> </td>
-            <td   style="text-align: left"> <button class="play" data-num22="${bt.id}" > ></button> </td>
-          </tr>`;
-                tbody22.innerHTML += tr;
-                del();
-                play();
-              }
-            });
-        };
-      });
-    });
 
   /********************************the play list****************** */
 
@@ -122,6 +88,52 @@ function fetchMusic() {
         del();
       }
     });
+
+
+
+      /******************************** adding to the play list****************** */
+      let di = document.querySelectorAll(".test");
+      
+      di.forEach((element) => {
+       element.onclick = function () {
+         
+          let datanum = this.getAttribute("data-num");
+        
+       
+          fetch(`${SERVER_ROOT}/api/playlist/add`, {
+            method: "POST",
+            body: JSON.stringify({ songId: datanum }),
+
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              let tbody22 = document.getElementById("table22");
+                   tbody22.innerHTML = "";
+              for(let bt of data) {
+               
+
+                let tr = `<tr id="row" >
+            <td> ${bt.orderId} </td>
+            <td>${bt.title}</td>
+            <td style="text-align: right"> <button    class="test2" data-num2="${bt.songId}" >x</button> </td>
+            <td   style="text-align: left"> <button class="play" data-num22="${bt.id}" > ></button> </td>
+          </tr>`;
+          
+          tbody22.innerHTML +=tr;
+                
+                del();
+                play();
+               }
+            });
+        };
+       });
+    });
+
+
 }
 
 /*******************delete function********* */
