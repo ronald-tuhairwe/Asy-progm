@@ -176,10 +176,10 @@ function play() {
   <source src="${SERVER_ROOT}/${datanum}" type="audio/mp4">
 </audio>
 
-<img
+<img class="rounded-pill"
 src="mode.png"
 alt="mylog"
-style="max-width: 15%; margin-left:2%"
+style="max-width: 15%;margin-top:-1.5%; margin-left:2%"
 />`;
     };
   });
