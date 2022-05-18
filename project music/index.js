@@ -171,9 +171,16 @@ function play() {
       console.log(datanum);
       let tolbar = document.getElementById("myAudio");
 
-      tolbar.innerHTML = `<audio controls id="myVideo" width="320" height="176" autoplay>
+      tolbar.innerHTML = `
+      <audio controls id="myVideo" width="320" height="176" autoplay>
   <source src="${SERVER_ROOT}/${datanum}" type="audio/mp4">
-</audio> `;
+</audio>
+
+<img
+src="mode.png"
+alt="mylog"
+style="max-width: 15%; margin-left:2%"
+/>`;
     };
   });
 }
